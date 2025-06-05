@@ -4,19 +4,40 @@
  */
 package portalbruxa.view;
 
+import javax.swing.JOptionPane;
+import portalbruxa.model.Artigo;
+import portalbruxa.model.BancoFake;
+
 /**
  *
  * @author Lucas
  */
 public class Card extends javax.swing.JPanel {
-
+    
+    private Artigo artigo;
     /**
      * Creates new form Card
      */
     public Card() {
         initComponents();
+        if (BancoFake.usuarioLogado != null && BancoFake.usuarioLogado.isAdmin()) {
+            btnExcluir.setVisible(true);
+        } else {
+            // Oculta o excluir
+            btnExcluir.setVisible(false);
+        }
     }
 
+    public void setArtigo(Artigo artigo) {
+        this.artigo = artigo;
+        setTitulo(artigo.getTitulo());
+        setDescricao(artigo.getConteudo());
+    }
+    
+    public Artigo getArtigo() {
+        return artigo;
+    }
+    
     public void setTitulo(String titulo) {
         lblTitulo.setText(titulo);
     }
@@ -38,7 +59,7 @@ public class Card extends javax.swing.JPanel {
         lblTitulo = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaDescricao = new javax.swing.JTextArea();
-        btnSaibaMais = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(102, 102, 255));
         setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -54,9 +75,14 @@ public class Card extends javax.swing.JPanel {
         txtaDescricao.setRows(5);
         jScrollPane1.setViewportView(txtaDescricao);
 
-        btnSaibaMais.setBackground(new java.awt.Color(204, 0, 204));
-        btnSaibaMais.setForeground(new java.awt.Color(151, 0, 189));
-        btnSaibaMais.setText("Saiba Mais");
+        btnExcluir.setBackground(new java.awt.Color(204, 0, 204));
+        btnExcluir.setForeground(new java.awt.Color(151, 0, 189));
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -65,35 +91,46 @@ public class Card extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(114, 114, 114)
-                                .addComponent(lblTitulo))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(20, 20, 20)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 33, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnSaibaMais)))
+                        .addGap(114, 114, 114)
+                        .addComponent(lblTitulo)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                        .addComponent(btnExcluir))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTitulo)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblTitulo)
+                    .addComponent(btnExcluir))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btnSaibaMais)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        // TODO add your handling code here:
+        int confirm = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir?", "Confirmação", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            BancoFake.artigos.remove(artigo);
+
+            // Remove do painel
+            javax.swing.SwingUtilities.getWindowAncestor(this).revalidate();
+            javax.swing.SwingUtilities.getWindowAncestor(this).repaint();
+
+            this.getParent().remove(this);
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnSaibaMais;
+    private javax.swing.JButton btnExcluir;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JTextArea txtaDescricao;

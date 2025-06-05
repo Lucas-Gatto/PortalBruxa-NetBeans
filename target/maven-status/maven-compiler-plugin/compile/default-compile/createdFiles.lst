@@ -10,6 +10,7 @@ portalbruxa\view\Navbar$1.class
 portalbruxa\model\Usuario.class
 portalbruxa\view\TelaCadastrarArtigo$1.class
 portalbruxa\view\Navbar$3.class
+portalbruxa\view\Card$1.class
 portalbruxa\view\TelaCadastro$1.class
 portalbruxa\view\TelaLogin$2.class
 portalbruxa\view\TelaLogin.class

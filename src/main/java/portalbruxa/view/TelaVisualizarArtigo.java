@@ -23,6 +23,7 @@ public class TelaVisualizarArtigo extends javax.swing.JFrame {
     }
 
     private void carregarArtigos() {
+        pArtigos.removeAll();
 
         for (Artigo artigo : BancoFake.artigos) {
             Card card = new Card();
